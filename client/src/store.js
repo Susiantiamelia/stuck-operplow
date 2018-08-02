@@ -162,6 +162,7 @@ export default new Vuex.Store({
         .then(result => {
           console.log(result)
           for(let i = 0; i < result.data.length; i++){
+            result.data[i].status = 'my'
             commit('setQuestion', result.data[i])
           }
 
@@ -180,6 +181,7 @@ export default new Vuex.Store({
       axios.get('http://localhost:3000/question')
       .then(result => {
         for(let i = 0; i < result.data.length; i++){
+          esult.data[i].status = 'other'
           commit('setQuestion', result.data[i])
         }
       })

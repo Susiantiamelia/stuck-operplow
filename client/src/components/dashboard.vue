@@ -52,6 +52,7 @@
                                 <v-flex xs8>
                                     <v-card flat>
                                             <div class="content">
+                                                <router-link :to="`/question/edit/${question._id}`"
                                                 <h3 class="headline mb-0">{{ question.title }}</h3>
                                                 <br>
                                                 <div>{{ question.content }}</div>

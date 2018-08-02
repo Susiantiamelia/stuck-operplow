@@ -89,6 +89,19 @@ class Questions{
             res.status(500).json(err.message)
         })
     }
+
+    static questionEdit(req,res){
+        QuestionModel.updateOne({_id: req.params.id}, {
+            title: req.body.title,
+            content: req.body.content
+        })
+        .then(result => {
+            res.status(200).json({msg: 'successfully updated question'})
+        })
+        .catch(err => {
+            res.status(500).json(err.message)
+        })
+    }
 }
 
 module.exports = Questions
