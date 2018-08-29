@@ -12,6 +12,8 @@ router.get('/find-question', Question.findQuestionByTitle)
 
 router.get('/', Question.allQuestion)
 
+router.get('/:id', Question.getOne)
+
 router.delete('/delete-question/:id', Question.delete)
 
 module.exports = router

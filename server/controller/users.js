@@ -7,7 +7,7 @@ const key = process.env.SECRET_KEY;
 var salt = bcrypt.genSaltSync(8);
 
 class Users {
-    static register(req,res){
+    static register(req,res){        
             let password = bcrypt.hashSync(req.body.password, salt);
             Model.create({
                 name: req.body.name,
@@ -17,10 +17,14 @@ class Users {
                 question_list: []
             })
             .then(user => {
+                console.log('err');
                 res.status(200).json({msg: 'Registration success', user: user})
             })
             .catch(err => {
+                
                 res.status(500).json(err.message)
+                
+                
             })
         
     }
@@ -34,7 +38,7 @@ class Users {
                 if(checkPass){
                     //untuk sementara token taruh di headers, setelah ngerjain client ditaruh di localstorage
                     let token = jwt.sign({ id: user[0]._id, fullname: user[0].full_name , email: user[0].email, todo_list: user[0].todo_list}, key);
-                    res.status(200).json({msg: `Happy to see you again ${user[0].full_name}`, token: token})
+                    res.status(200).json({msg: `Happy to see you again ${user[0].full_name}`, token: token, id: user[0]._id})
                 } else {
                     res.status(400).json({error: 'Wrong password'})
                 }

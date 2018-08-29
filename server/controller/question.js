@@ -8,6 +8,8 @@ class Questions{
     static create(req,res){
         let tokenUser = req.headers.token
         let user = jwt.verify(tokenUser, key)
+        console.log(user);
+        
 
         QuestionModel.create({
             title: req.body.title,
@@ -22,12 +24,16 @@ class Questions{
                 res.status(200).json({msg: 'success add question', question: success})
             })
             .catch(err => {
+                console.log(err);
+                
                 res.status(500).json(err.message)
             })
             
         })
         .catch(err => {
             res.status(500).json(err.message)
+            console.log(err)
+            
         })
     }
 
@@ -68,6 +74,17 @@ class Questions{
         .catch(err => {
             res.status(500).json(err.message)
         })
+    }
+
+    static getOne(req,res){
+        QuestionModel.find({_id: req.params.id})
+        .then( result => {
+            res.status(200).json(result[0])
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+
     }
 
     static findQuestionByTitle(req,res){

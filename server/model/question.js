@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 let questionSchema = new Schema({
     title: {
         type:String,
-        unique:true
     },
     content: String,
     votes:[{

@@ -23,10 +23,14 @@ class Answers{
                 res.status(200).json({msg: 'Your answer has been post', answer: answer})
             })
             .catch(err => {
+                console.log('error masuk quest');
+                
                 res.status(500).json(err.message)
             })
         })
         .catch(err => {
+            console.log('error disini deh');
+            
             res.status(500).json(err.message)
         })
     }
@@ -46,7 +50,7 @@ class Answers{
 
     static read(req,res){
 
-        AnswerModel.find({questionId: req.params.id})
+        AnswerModel.find({questionId: req.params.id}).populate('userId')
         .then(answer => {
             res.status(200).json(answer)
         })

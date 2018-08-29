@@ -14,7 +14,15 @@ export default new Router({
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/signup.vue')
+      component: () => import(/* webpackChunkName: "about" */ './views/signup.vue'),
+      children: [
+        {
+          path: '/question/:id',
+          name: 'question',
+          props: true,
+          component: () => import('./components/question.vue')
+        }
+      ]
     },
     {
       path: '/login',
@@ -24,7 +32,15 @@ export default new Router({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: dashboard
+      component: dashboard,
+      children: [
+        {
+          path: '/myquestion/:id',
+          name: 'myquestion',
+          props: true,
+          component: () => import('./components/myquestion.vue')
+        }
+      ]
     },
     {
       path: '/question/edit/:id',

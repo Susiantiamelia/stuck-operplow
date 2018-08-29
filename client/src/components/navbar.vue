@@ -16,13 +16,17 @@
             <v-toolbar-items class="hidden-sm-and-down">
             <v-btn class="nav-but" flat to="/">Home</v-btn>
             <v-btn class="nav-but" flat v-if="!token" to="/login">Login</v-btn>
-            <v-btn class="nav-but" flat v-else > Logout</v-btn>
+            <v-btn class="nav-but" flat to="/dashboard" v-if="token">
+                <v-icon>account_circle</v-icon>
+            </v-btn>
+            <v-btn class="nav-but" flat v-if="token" @click="logout"> Logout</v-btn>
             </v-toolbar-items>
         </v-toolbar>
     </div>
 </template>
 
 <script>
+import { mapActions, map } from 'vuex'
 export default {
     data(){
         let token = localStorage.getItem('userToken')
@@ -30,6 +34,11 @@ export default {
         return {
             token: token
         }
+    },
+    methods: {
+        ...mapActions([
+            'logout'
+        ])
     }
 }
 </script>

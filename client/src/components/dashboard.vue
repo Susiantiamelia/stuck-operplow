@@ -89,7 +89,7 @@ export default {
         ]),
         Name: {
             get () {
-                return this.$store.state.Name
+                return this.$store.state.name
             },
             set (value) {
                 this.$store.commit('setName', value)
@@ -97,7 +97,7 @@ export default {
         },
         Email: {
             get () {
-                return this.$store.state.Email
+                return this.$store.state.email
             },
             set (value) {
                 this.$store.commit('setEmail', value)
@@ -105,7 +105,7 @@ export default {
         },
         Username: {
             get () {
-                return this.$store.state.Username
+                return this.$store.state.username
             },
             set (value) {
                 this.$store.commit('setUsername', value)

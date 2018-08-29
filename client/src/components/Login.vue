@@ -16,8 +16,8 @@
                         <v-layout >
                             <v-flex >
                                 <v-text-field
-                                    label="Email"
-                                    v-model="Email"
+                                    label="Username / Email"
+                                    v-model="uname_email"
                                 ></v-text-field>
                             </v-flex>
                         </v-layout>
@@ -64,12 +64,12 @@ export default {
         ])
     },
     computed: {
-        Email: {
+        uname_email: {
             get () {
-                return this.$store.state.Email
+                return this.$store.state.uname_email
             },
             set (value) {
-                this.$store.commit('setEmail', value)
+                this.$store.commit('setUname', value)
             }
         },
         Password: {
