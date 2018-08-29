@@ -74,7 +74,7 @@ export default new Vuex.Store({
         console.log(result);
         
         let token = result.credential.accessToken
-        axios.post('http://localhost:3000/users/loginfb', {
+        axios.post('https://stuck.ariefardi.xyz/users/loginfb', {
           fbToken: token
         })
         .then(server => {
@@ -112,7 +112,7 @@ export default new Vuex.Store({
       console.log(user);
       
 
-      axios.post('http://localhost:3000/users/register', user)
+      axios.post('https://stuck.ariefardi.xyz/users/register', user)
       .then(() => {
         commit('setName', '')
         commit('setEmail', '')
@@ -134,7 +134,7 @@ export default new Vuex.Store({
     },
 
     login({commit}){
-      axios.post('http://localhost:3000/users/login',{
+      axios.post('https://stuck.ariefardi.xyz/users/login',{
         uname_email: this.state.uname_email,
         password: this.state.password
       })
@@ -163,7 +163,7 @@ export default new Vuex.Store({
 
     Profile({commit}){
       let token = localStorage.getItem('userToken')
-      axios.get('http://localhost:3000/users/profile',{
+      axios.get('https://stuck.ariefardi.xyz/users/profile',{
         headers: {
           token: token
         }
@@ -192,7 +192,7 @@ export default new Vuex.Store({
         email: this.state.Password
       }
 
-      axios.post('http://localhost:3000/users/edit-profile', user, {
+      axios.post('https://stuck.ariefardi.xyz/users/edit-profile', user, {
         headers: {
           token: localStorage.getItem('userToken')
         }
@@ -219,7 +219,7 @@ export default new Vuex.Store({
       console.log(this.state.post_title, 'and', this.state.post_content, 'and', this.state.token );
       
       let token = localStorage.getItem('userToken')
-      axios.post('http://localhost:3000/question/post', {
+      axios.post('https://stuck.ariefardi.xyz/question/post', {
         title: this.state.post_title,
         content: this.state.post_content
       }, {
@@ -243,7 +243,7 @@ export default new Vuex.Store({
       })
     },
     myQuestion({commit}){
-      axios.get('http://localhost:3000/question/user-question',{
+      axios.get('https://stuck.ariefardi.xyz/question/user-question',{
           headers: {
             token: localStorage.getItem('userToken')
           }
@@ -264,7 +264,7 @@ export default new Vuex.Store({
     },
 
     allQuestion({ commit }){
-      axios.get('http://localhost:3000/question', {
+      axios.get('https://stuck.ariefardi.xyz/question', {
         headers: {
           token: localStorage.getItem('userToken')
         }
@@ -282,7 +282,7 @@ export default new Vuex.Store({
     },
 
     getquestion({commit}, id){
-      axios.get(`http://localhost:3000/question/${id}`, {
+      axios.get(`https://stuck.ariefardi.xyz/question/${id}`, {
         headers: {
           token: localStorage.getItem('userToken')
         }
@@ -304,7 +304,7 @@ export default new Vuex.Store({
         title: this.state.question.title,
         content: this.state.question.content
       }
-      axios.put(`http://localhost:3000/question/edit/${id}`, input, {
+      axios.put(`https://stuck.ariefardi.xyz/question/edit/${id}`, input, {
         headers: {
           token: localStorage.getItem('userToken')
         }
@@ -326,7 +326,7 @@ export default new Vuex.Store({
     },
 
     getallanswers({commit}, id){
-      axios.get(`http://localhost:3000/answer/${id}`, {
+      axios.get(`https://stuck.ariefardi.xyz/answer/${id}`, {
         headers: {
           token: localStorage.getItem('userToken')
         }
@@ -346,7 +346,7 @@ export default new Vuex.Store({
 
     postanswer({dispatch, commit}, id){    
       if(this.state.token){
-        axios.post(`http://localhost:3000/answer/create/${id}`, {
+        axios.post(`https://stuck.ariefardi.xyz/answer/create/${id}`, {
           content: this.state.answer_content
         }, {
           headers: {
@@ -388,7 +388,7 @@ export default new Vuex.Store({
         focusConfirm: false,
         preConfirm: () => {
           let content = document.getElementById('edit_answer').value
-          axios.put(`http://localhost:3000/answer/edit/${answer._id}`, {
+          axios.put(`https://stuck.ariefardi.xyz/answer/edit/${answer._id}`, {
             content: content
           }, {
             headers: {
@@ -415,7 +415,7 @@ export default new Vuex.Store({
 
     upVote({ dispatch }, answer){
       if(this.state.token){
-        axios.put(`http://localhost:3000/answer/upvote/${answer._id}`, {}, {
+        axios.put(`https://stuck.ariefardi.xyz/answer/upvote/${answer._id}`, {}, {
           headers: {
             token: this.state.token
           }
@@ -441,7 +441,7 @@ export default new Vuex.Store({
 
     downVote({ dispatch }, answer){
       if(this.state.token){
-        axios.put(`http://localhost:3000/answer/downvote/${answer._id}`, {}, {
+        axios.put(`https://stuck.ariefardi.xyz/answer/downvote/${answer._id}`, {}, {
           headers: {
             token: this.state.token
           }
@@ -467,7 +467,7 @@ export default new Vuex.Store({
 
     votesQuestion({ dispatch }, id){
       if(this.state.token) {
-        axios.put(`http://localhost:3000/question/votes/${id}`, {}, {
+        axios.put(`https://stuck.ariefardi.xyz/question/votes/${id}`, {}, {
           headers: {
             token: this.state.token
           }
@@ -492,7 +492,7 @@ export default new Vuex.Store({
     },
 
     deleteQuestion(context, id){
-      axios.delete(`http://localhost:3000/question/delete-question/${id}`,{
+      axios.delete(`https://stuck.ariefardi.xyz/question/delete-question/${id}`,{
         headers: {
           token: localStorage.getItem('userToken')
         }
@@ -517,7 +517,7 @@ export default new Vuex.Store({
     findQuestion({ commit }){
       let search = this.state.search
 
-      axios.get('http://localhost:3000/question/find-question', {
+      axios.get('https://stuck.ariefardi.xyz/question/find-question', {
         search: search
       }, {
         headers: {
