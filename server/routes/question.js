@@ -4,6 +4,8 @@ const Question= require('../controller/question.js')
 
 router.post('/post', Question.create)
 
+router.put('/votes/:id', Question.votes)
+
 router.put('/edit/:id',Question.update)
 
 router.get('/user-question', Question.readQuestionUser)

@@ -1,5 +1,6 @@
 const QuestionModel = require('../model/question.js')
 const UserModel = require('../model/user.js')
+const AnswerModel = require('../model/answer.js')
 const jwt = require("jsonwebtoken");
 require('dotenv').config()
 const key = process.env.SECRET_KEY;
@@ -56,7 +57,14 @@ class Questions{
 
         QuestionModel.deleteOne({_id: question_id})
         .then(success => {
-            res.status(200).json('successfully deleted question')
+            AnswerModel.deleteMany({questionId: question_id})
+            .then(result => {
+                res.status(200).json('successfully deleted question')
+
+            })
+            .catch(err => {
+                res.status(500).json(err.message)
+            })
         })
         .catch(err => {
             res.status(500).json(err.message)
@@ -117,6 +125,37 @@ class Questions{
         })
         .catch(err => {
             res.status(500).json(err.message)
+        })
+    }
+
+    static votes(req,res){
+        let tokenUser = req.headers.token
+        let user = jwt.verify(tokenUser, key)
+
+       QuestionModel.find({_id: req.params.id})
+        .then(result => {
+            if(result.length != 0){
+                if(result[0].userId != user.id){
+                   QuestionModel.update({_id: req.params.id}, {
+                        $addToSet: {votes: user.id}
+                    })
+                    .then(result => {
+                        console.log(result);
+                        
+                        res.status(200).json('success votes question')
+                    })
+                    .catch(err => {
+                        res.status(500).json(err)
+                    })
+                } else {
+                    res.status(400).json(`sorry but you can't vote on your own question`)
+                }
+            } else {
+                res.status(400).json(`sorry but we can't find the question`)
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
         })
     }
 }

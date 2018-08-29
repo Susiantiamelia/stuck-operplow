@@ -29,7 +29,7 @@
 import { mapActions, map } from 'vuex'
 export default {
     data(){
-        let token = localStorage.getItem('userToken')
+        let token = localStorage.getItem('userToken') || false
 
         return {
             token: token

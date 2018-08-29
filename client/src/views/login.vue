@@ -9,7 +9,14 @@ import login from '@/components/Login.vue'
 export default {
     components: {
         login
-    }
+    },
+    created() {
+        let token = localStorage.getItem('userToken') || false
+
+        if(token){
+            this.$router.push('/dashboard')
+        }
+    },
 }
 </script>
 

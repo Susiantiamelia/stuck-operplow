@@ -21,6 +21,7 @@ export default new Vuex.Store({
     answers: [],
     token: localStorage.getItem('userToken') || false,
     answer_content: '',
+    error: ''
   },
   mutations: {
     setName(state, payload){
@@ -91,7 +92,7 @@ export default new Vuex.Store({
       })
     },
 
-    login(){
+    login({commit}){
       axios.post('http://localhost:3000/users/login',{
         uname_email: this.state.uname_email,
         password: this.state.password
@@ -100,6 +101,8 @@ export default new Vuex.Store({
         console.log(result)
         localStorage.setItem('userToken', result.data.token)
         localStorage.setItem('user', result.data.id)
+        commit('setUname', '')
+        commit('setPassword', '')
         swal({
           title: 'succesfully login!',
           type: "success",
@@ -107,11 +110,7 @@ export default new Vuex.Store({
         route.push('/dashboard')
       })
       .catch(err => {
-        swal({
-          type: 'error',
-          title: 'Oops...',
-          text: `${err.message}`,
-        })
+        this.state.error = 'Username / Email / Password wrong'
       })
     },
 
@@ -176,6 +175,8 @@ export default new Vuex.Store({
     },
 
     postQuestion({ dispatch }){
+      console.log(this.state.post_title, 'and', this.state.post_content, 'and', this.state.token );
+      
       let token = localStorage.getItem('userToken')
       axios.post('http://localhost:3000/question/post', {
         title: this.state.post_title,
@@ -321,6 +322,7 @@ export default new Vuex.Store({
       }
       
     },
+
     editanswer({dispatch}, answer){
       swal({
         title: 'Edit your answer',
@@ -348,6 +350,103 @@ export default new Vuex.Store({
           })
         }
       })
+    },
+
+    upVote({ dispatch }, answer){
+      if(this.state.token){
+        axios.put(`http://localhost:3000/answer/upvote/${answer._id}`, {}, {
+          headers: {
+            token: this.state.token
+          }
+        })
+        .then(result => {
+          console.log(result);
+          dispatch('getallanswers', answer.questionId)
+        })
+        .catch(err => {
+          console.log(err);
+          
+        })
+      } else {
+        swal({
+          type: 'warning',
+          title: 'Oops...',
+          text: `please login first`,
+        })
+        route.push('/login')
+      }  
+      
+    },
+
+    downVote({ dispatch }, answer){
+      if(this.state.token){
+        axios.put(`http://localhost:3000/answer/downvote/${answer._id}`, {}, {
+          headers: {
+            token: this.state.token
+          }
+        })
+        .then(result => {
+          console.log(result);
+          dispatch('getallanswers', answer.questionId)
+        })
+        .catch(err => {
+          console.log(err);
+          
+        })
+      } else {
+        swal({
+          type: 'warning',
+          title: 'Oops...',
+          text: `please login first`,
+        })
+        route.push('/login')
+      }  
+      
+    },
+
+    votesQuestion({ dispatch }, id){
+      if(this.state.token) {
+        axios.put(`http://localhost:3000/question/votes/${id}`, {}, {
+          headers: {
+            token: this.state.token
+          }
+        })
+        .then(result => {
+          console.log(result);
+          dispatch('getquestion', id)
+        })
+        .catch(err => {
+          console.log(err);
+          
+        })
+      } else {
+        swal({
+          type: 'warning',
+          title: 'Oops...',
+          text: `please login first`,
+        })
+        route.push('/login')
+      }  
+      
+    },
+
+    deleteQuestion(context, id){
+      axios.delete(`http://localhost:3000/question/delete-question/${id}`)
+      .then(result => {
+        route.push('/dashboard')
+        swal({
+          title: 'succesfully delete question!',
+          type: "success",
+        });
+      })
+      .catch(err => {
+        swal({
+          type: 'error',
+          title: 'Oops...',
+          text: `${err.message}`,
+        })
+      })
+
     }
   }
 })

@@ -9,7 +9,7 @@
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title>{{ question.title }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ question.content }}</v-list-tile-sub-title>
+              <v-list-tile-sub-title v-html="question.content"></v-list-tile-sub-title>
             </v-list-tile-content>        
           </v-list-tile>
         </template>

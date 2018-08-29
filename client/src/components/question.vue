@@ -9,7 +9,13 @@
           <br><br>
           <h1>{{ question.title }}</h1>
           <br><br>
-          <p>{{ question.content }}</p>
+          <p v-html="question.content"></p>
+          <v-badge>
+            <span slot="badge">{{ question.votes.length }}</span>
+              <v-btn fab small flat @click="votesQuestion(question._id)">
+                <i class="fas fa-heart fa-2x"></i>
+              </v-btn>
+          </v-badge>
         </v-flex>
       </v-layout>
     </v-container>
@@ -39,10 +45,22 @@
                     <v-card-title>
                       <h4>{{ answer.userId.name }}</h4>                                            
                     </v-card-title>
-                    <p>{{ answer.content}}</p>
+                    <p v-html="answer.content"></p>
+                    <v-badge left>
+                      <span slot="badge">{{ answer.votesUp.length }}</span>
+                       <v-btn fab small @click="upVote(answer)">
+                        <i class="far fa-thumbs-up"></i>
+                      </v-btn>
+                    </v-badge>
                     <v-btn fab small color="primary" v-if="answer.userId._id == user" @click="editanswer(answer)">
                       <i class="fas fa-pen" style="color: white !important"></i>
                     </v-btn>
+                    <v-badge>
+                      <span slot="badge">{{ answer.votesDown.length }}</span>
+                       <v-btn fab small @click="downVote(answer)">
+                        <i class="far fa-thumbs-down"></i>
+                      </v-btn>
+                    </v-badge>
                   </v-card>                                    
                 </v-flex>
               </v-layout>
@@ -67,7 +85,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getquestion', 'getallanswers', 'postanswer', 'editanswer'
+      'getquestion', 'getallanswers', 'postanswer', 'editanswer', 'upVote', 'downVote', 'votesQuestion'
     ])
   },
   computed: {

@@ -13,9 +13,13 @@
             <v-textarea
               name="input-7-1"
               label="Content"
-              v-model="question.content"
+              v-html="question.content"
             ></v-textarea>
             <v-btn block color="black" dark @click="editQuestion(question._id)">Edit</v-btn>
+            <br>
+            <h2>Or</h2>
+            <br>
+            <v-btn block color="black" dark @click="deleteQuestion(question._id)">DELETE</v-btn>
           </v-card>
         </v-flex>
       </v-layout>
@@ -46,7 +50,7 @@
                     <v-card-title>
                       <h4>{{ answer.userId.name }}</h4>                                            
                     </v-card-title>
-                    <p>{{ answer.content}}</p>
+                    <p v-html="answer.content"></p>
                     <v-btn fab small color="primary" v-if="answer.userId._id == user" @click="editanswer(answer)">
                       <i class="fas fa-pen" style="color: white !important"></i>
                     </v-btn>
@@ -74,7 +78,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'getquestion', 'editQuestion', 'getallanswers', 'postanswer', 'editanswer'
+      'getquestion', 'editQuestion', 'getallanswers', 'postanswer', 'editanswer', 'deleteQuestion'
     ])
   },
   computed: {

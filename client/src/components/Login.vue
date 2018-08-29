@@ -5,39 +5,40 @@
             <v-layout justify-center>
                 <v-flex xs5>
                     <v-card color="white">
-                    <v-avatar
-                    size="150px"
-                    >
-                    <i class="fab fa-wolf-pack-battalion fa-5x"></i>
-                    </v-avatar>
-                    <h3>Welcome</h3>
-                    <br><br><br>
-                    <v-container>
-                        <v-layout >
-                            <v-flex >
-                                <v-text-field
-                                    label="Username / Email"
-                                    v-model="uname_email"
-                                ></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                     <v-container>
-                        <v-layout >
-                            <v-flex>
-                                <v-text-field
-                                    v-model="Password"
-                                    :append-icon="show1 ? 'visibility_off' : 'visibility'"
-                                    :type="show1 ? 'text' : 'password'"
-                                    name="input-10-1"
-                                    label="Password"
-                                    @click:append="show1 = !show1"
-                                ></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                          <v-btn outline color="black" @click="login">Submit</v-btn>
-                </v-card>
+                        <v-avatar size="150px">
+                            <i class="fab fa-wolf-pack-battalion fa-5x"></i>
+                        </v-avatar>
+                        <h3>Welcome</h3>
+                        <br><br><br>
+                        <small>{{ error }}</small>
+                        <v-container>
+                            <v-layout >
+                                <v-flex >
+                                    <v-text-field
+                                        label="Username / Email"
+                                        v-model="uname_email"
+                                    ></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                        <v-container>
+                            <v-layout >
+                                <v-flex>
+                                    <v-text-field
+                                        v-model="Password"
+                                        :append-icon="show1 ? 'visibility_off' : 'visibility'"
+                                        :type="show1 ? 'text' : 'password'"
+                                        name="input-10-1"
+                                        label="Password"
+                                        @click:append="show1 = !show1"
+                                    ></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                        <v-container>
+                            <v-btn block color="black" dark @click="login">Submit</v-btn>
+                        </v-container>   
+                    </v-card>
                 </v-flex>
             </v-layout>
         </v-container>
@@ -64,6 +65,9 @@ export default {
         ])
     },
     computed: {
+        ...mapState([
+            'error'
+        ]),
         uname_email: {
             get () {
                 return this.$store.state.uname_email
@@ -88,5 +92,9 @@ export default {
 .dash{
     height: 100vh;
     background-color: steelblue
+}
+
+small {
+  color: red
 }
 </style>
