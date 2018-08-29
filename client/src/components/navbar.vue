@@ -8,9 +8,10 @@
                         hide-details
                         placeholder="Search Here"
                         single-line
+                        v-model="search"
                     ></v-text-field>
                 </v-flex>
-                <v-btn flat><v-icon>search</v-icon></v-btn>
+                <v-btn flat @click="findQuestion"><v-icon>search</v-icon></v-btn>
             </v-layout>
             <v-spacer></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
@@ -26,7 +27,7 @@
 </template>
 
 <script>
-import { mapActions, map } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
     data(){
         let token = localStorage.getItem('userToken') || false
@@ -37,8 +38,18 @@ export default {
     },
     methods: {
         ...mapActions([
-            'logout'
+            'logout', 'findQuestion'
         ])
+    },
+    computed: {
+        search: {
+            get () {
+                return this.$store.state.search
+            },
+            set (value) {
+                this.$store.commit('setSearch', value)
+            }
+        }
     }
 }
 </script>

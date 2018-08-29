@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var dotenv = require('dotenv').config();
 var cors = require('cors');
+const cronmail = require('./cron.js')
 
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://amelia:amel22@ds113200.mlab.com:13200/stuck_operplow', { useNewUrlParser: true });
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+cronmail()
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/question', questionRouter);

@@ -36,8 +36,12 @@
                             </v-layout>
                         </v-container>
                         <v-container>
-                            <v-btn block color="black" dark @click="login">Submit</v-btn>
-                        </v-container>   
+                            <v-btn block color="black" dark @click="login">LOGIN</v-btn>
+                        </v-container>
+                        <h4>OR</h4>
+                        <v-container>
+                            <v-btn block color="primary" dark @click="loginFb">LOGIN WITH FACEBOOK</v-btn>
+                        </v-container>
                     </v-card>
                 </v-flex>
             </v-layout>
@@ -61,7 +65,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            'login'
+            'login', 'loginFb'
         ])
     },
     computed: {

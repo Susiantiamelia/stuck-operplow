@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import route from './router.js'
 import swal from 'sweetalert2'
+import {provider, auth} from '@/firebase.js'
 
 Vue.use(Vuex)
 
@@ -21,7 +22,8 @@ export default new Vuex.Store({
     answers: [],
     token: localStorage.getItem('userToken') || false,
     answer_content: '',
-    error: ''
+    error: '',
+    search: ''
   },
   mutations: {
     setName(state, payload){
@@ -59,9 +61,45 @@ export default new Vuex.Store({
     },
     setanswer_content(state, payload){
       state.answer_content = payload
+    },
+    setSearch(state, payload){
+      state.search = payload
     }
   },
   actions: {
+
+    loginFb({commit}){
+      auth.signInWithPopup(provider)
+      .then(function(result) {
+        console.log(result);
+        
+        let token = result.credential.accessToken
+        axios.post('http://localhost:3000/users/loginfb', {
+          fbToken: token
+        })
+        .then(server => {
+          console.log(server)
+          localStorage.setItem('userToken', server.data.token)
+          localStorage.setItem('user', server.data.id)
+          commit('setUname', '')
+          commit('setPassword', '')
+          swal({
+            title: 'succesfully login!',
+            type: "success",
+          });
+          route.push('/dashboard')
+          
+        })
+        .catch(err => {
+          console.log(err);
+          
+        })
+      })
+      .catch(err => {
+        console.log(err);
+        
+      })
+    },
     signUp({commit}){
 
       let user = {
@@ -70,6 +108,9 @@ export default new Vuex.Store({
         email: this.state.email,
         password: this.state.password
       }
+
+      console.log(user);
+      
 
       axios.post('http://localhost:3000/users/register', user)
       .then(() => {
@@ -223,7 +264,11 @@ export default new Vuex.Store({
     },
 
     allQuestion({ commit }){
-      axios.get('http://localhost:3000/question')
+      axios.get('http://localhost:3000/question', {
+        headers: {
+          token: localStorage.getItem('userToken')
+        }
+      })
       .then(result => {
         commit('setQuestion', result.data)
       })
@@ -237,7 +282,11 @@ export default new Vuex.Store({
     },
 
     getquestion({commit}, id){
-      axios.get(`http://localhost:3000/question/${id}`)
+      axios.get(`http://localhost:3000/question/${id}`, {
+        headers: {
+          token: localStorage.getItem('userToken')
+        }
+      })
         .then(result => {
           commit('setOneQuestion', result.data)
         })
@@ -255,7 +304,11 @@ export default new Vuex.Store({
         title: this.state.question.title,
         content: this.state.question.content
       }
-      axios.put(`http://localhost:3000/question/edit/${id}`, input)
+      axios.put(`http://localhost:3000/question/edit/${id}`, input, {
+        headers: {
+          token: localStorage.getItem('userToken')
+        }
+      })
         .then(result => {
           route.push('/dashboard')
           swal({
@@ -273,7 +326,11 @@ export default new Vuex.Store({
     },
 
     getallanswers({commit}, id){
-      axios.get(`http://localhost:3000/answer/${id}`)
+      axios.get(`http://localhost:3000/answer/${id}`, {
+        headers: {
+          token: localStorage.getItem('userToken')
+        }
+      })
       .then(result => {
         commit('setAnswers', result.data)
         
@@ -333,6 +390,10 @@ export default new Vuex.Store({
           let content = document.getElementById('edit_answer').value
           axios.put(`http://localhost:3000/answer/edit/${answer._id}`, {
             content: content
+          }, {
+            headers: {
+              token: localStorage.getItem('userToken')
+            }
           })
           .then(result => {
             dispatch('getallanswers', answer.questionId)
@@ -431,7 +492,11 @@ export default new Vuex.Store({
     },
 
     deleteQuestion(context, id){
-      axios.delete(`http://localhost:3000/question/delete-question/${id}`)
+      axios.delete(`http://localhost:3000/question/delete-question/${id}`,{
+        headers: {
+          token: localStorage.getItem('userToken')
+        }
+      })
       .then(result => {
         route.push('/dashboard')
         swal({
@@ -447,6 +512,26 @@ export default new Vuex.Store({
         })
       })
 
+    },
+
+    findQuestion({ commit }){
+      let search = this.state.search
+
+      axios.get('http://localhost:3000/question/find-question', {
+        search: search
+      }, {
+        headers: {
+          token: localStorage.getItem('userToken')
+        }
+      })
+      .then(result => {
+        commit('setQuestion', result.data)
+        commit('setSearch', '')
+      })
+      .catch(err => {
+        console.log(err);
+        
+      })
     }
   }
 })

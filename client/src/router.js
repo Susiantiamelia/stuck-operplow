@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './views/login.vue'
 import dashboard from './views/dashboard.vue'
-import questionEdit from './views/question-edit.vue'
 
 Vue.use(Router)
 
@@ -41,11 +40,6 @@ export default new Router({
           component: () => import('./components/myquestion.vue')
         }
       ]
-    },
-    {
-      path: '/question/edit/:id',
-      name: 'question-edit',
-      component: questionEdit
     }
   ]
 })

@@ -46,8 +46,14 @@ export default {
         }
     },
     created(){
-        this.Profile()
-        this.myQuestion()
+        let token = localStorage.getItem('userToken')
+        if(token){
+            this.Profile()
+            this.myQuestion()
+        } else {
+            this.$router.push('/login')
+        }
+        
     },
     computed: {
         ...mapState([
