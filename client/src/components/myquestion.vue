@@ -76,6 +76,11 @@ export default {
       this.getallanswers(this.id) 
     }
   },
+  created() {
+    this.id = this.$router.params.id;
+    this.getquestion(this.$router.params.id)
+    this.getallanswers(this.$router.params.id)
+  },
   methods: {
     ...mapActions([
       'getquestion', 'editQuestion', 'getallanswers', 'postanswer', 'editanswer', 'deleteQuestion'
